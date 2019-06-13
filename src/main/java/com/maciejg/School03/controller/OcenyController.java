@@ -16,43 +16,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maciejg.School03.exxception.ResourceNotFoundException;
-import com.maciejg.School03.model.LoginForStudents;
-import com.maciejg.School03.repository.LoginForsStudentsRepository;
+import com.maciejg.School03.model.Oceny;
+import com.maciejg.School03.model.Students;
+import com.maciejg.School03.repository.OcenyRepository;
+
+//Probny kontroler do tabeli oceny bez relacji
 
 @CrossOrigin
 @RestController
-@RequestMapping("/login")
-public class LoginForStudentsController {
-	
+@RequestMapping("/api")
+public class OcenyController {
+
 	@Autowired
-	LoginForsStudentsRepository loginRepository;
-
-	@GetMapping("/students")
-	public List<LoginForStudents> getAll(){
+	OcenyRepository ocenyRepository;
+	
+	@GetMapping("/oceny")
+	public List<Oceny> getAll(){
 		
-		return loginRepository.findAll();
+		return ocenyRepository.findAll();
 	}
 	
-	@PostMapping("/students")
-	public LoginForStudents createm(@Valid @RequestBody LoginForStudents entity) {
+	@PostMapping("/oceny")
+	public Oceny createm(@Valid @RequestBody Oceny entity) {
 		
-		return loginRepository.save(entity);
+		return ocenyRepository.save(entity);
 	}
 
-	@GetMapping("/students/{id}")
-	public LoginForStudents getNoteById(@PathVariable(value = "id") Long id) {
-	    return loginRepository.findById(id)
+	@GetMapping("/oceny/{id}")
+	public Oceny getNoteById(@PathVariable(value = "id") Long id) {
+	    return ocenyRepository.findById(id)
 	            .orElseThrow(() -> new ResourceNotFoundException("Login", "id", id));
 	}
 
 	
-	@DeleteMapping("/students/{id}")
+	@DeleteMapping("/oceny/{id}")
 	public ResponseEntity<?> delete(@PathVariable(value = "id") long id){
 		
-		LoginForStudents entity = loginRepository.findById(id)
+		Oceny entity = ocenyRepository.findById(id)
 								.orElseThrow(() -> new ResourceNotFoundException("EntityNote", "id", id));
 		
-		loginRepository.delete(entity);
+		ocenyRepository.delete(entity);
 		
 		return ResponseEntity.ok().build();
 	}

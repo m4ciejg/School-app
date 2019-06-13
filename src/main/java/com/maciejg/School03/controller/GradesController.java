@@ -16,43 +16,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maciejg.School03.exxception.ResourceNotFoundException;
-import com.maciejg.School03.model.LoginForStudents;
-import com.maciejg.School03.repository.LoginForsStudentsRepository;
+import com.maciejg.School03.model.Grades;
+import com.maciejg.School03.model.Students;
+import com.maciejg.School03.repository.GradesRepository;
+
+//Kontroler do tabeli oceny z relacjami
 
 @CrossOrigin
 @RestController
-@RequestMapping("/login")
-public class LoginForStudentsController {
-	
+@RequestMapping("/api")
+public class GradesController {
+
 	@Autowired
-	LoginForsStudentsRepository loginRepository;
-
-	@GetMapping("/students")
-	public List<LoginForStudents> getAll(){
+	GradesRepository gradesRepository;
+	
+	@GetMapping("/grades")
+	public List<Grades> getAll(){
 		
-		return loginRepository.findAll();
+		return gradesRepository.findAll();
 	}
 	
-	@PostMapping("/students")
-	public LoginForStudents createm(@Valid @RequestBody LoginForStudents entity) {
+	@PostMapping("/grades")
+	public Grades createm(@Valid @RequestBody Grades entity) {
 		
-		return loginRepository.save(entity);
+		return gradesRepository.save(entity);
 	}
 
-	@GetMapping("/students/{id}")
-	public LoginForStudents getNoteById(@PathVariable(value = "id") Long id) {
-	    return loginRepository.findById(id)
-	            .orElseThrow(() -> new ResourceNotFoundException("Login", "id", id));
+	@GetMapping("/grades/{id}")
+	public Grades getNoteById(@PathVariable(value = "id") Long id) {
+	    return gradesRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException("Grades", "id", id));
 	}
 
 	
-	@DeleteMapping("/students/{id}")
+	@DeleteMapping("/grades/{id}")
 	public ResponseEntity<?> delete(@PathVariable(value = "id") long id){
 		
-		LoginForStudents entity = loginRepository.findById(id)
+		Grades entity = gradesRepository.findById(id)
 								.orElseThrow(() -> new ResourceNotFoundException("EntityNote", "id", id));
 		
-		loginRepository.delete(entity);
+		gradesRepository.delete(entity);
 		
 		return ResponseEntity.ok().build();
 	}
